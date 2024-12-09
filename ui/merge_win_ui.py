@@ -102,7 +102,7 @@ class Ui_MergeWindow(object):
     # setupUi
 
     def retranslateUi(self, MergeWindow):
-        MergeWindow.setWindowTitle(QCoreApplication.translate("MergeWindow", u"word\u6587\u6863\u5408\u5e76", None))
+        MergeWindow.setWindowTitle(QCoreApplication.translate("MergeWindow", u"word\u6587\u6863\u5408\u5e76(\u62c9\u62c9\u5236\u4f5c~\u5c0f\u6ce2\u4e13\u7528~)", None))
         self.input_label.setText(QCoreApplication.translate("MergeWindow", u"\u5f85\u5408\u5e76word\u6587\u6863\u6240\u5728\u76ee\u5f55:", None))
         self.select_input_dir_button.setText(QCoreApplication.translate("MergeWindow", u"...", None))
         self.output_label.setText(QCoreApplication.translate("MergeWindow", u"\u5408\u5e76\u540eword\u6587\u6863\u8f93\u51fa\u76ee\u5f55:", None))

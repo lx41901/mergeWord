@@ -30,7 +30,7 @@ class MergeThread(QThread):
         try:
             self.merge_word_documents(self.inputDic)
         except CustomError as e:
-            logger.exception(e.msg)
+            logger.warning("提示: " + e.msg)
             resultMsg = e.msg
         except Exception as e:
             logger.exception("未知错误: " + str(e))
@@ -129,7 +129,8 @@ class MergeThread(QThread):
             for file in files:
                 if file.endswith('.doc'):
                     file_dir_list.append(os.path.join(cwd, root, file))
-        print(f'一共找到{len(file_dir_list)}个doc文件')
+
+        logger.info(f'一共找到{len(file_dir_list)}个doc文件')
 
         # ------ 将doc另存为docx ----------
         word = wc.Dispatch("Word.Application")
@@ -145,7 +146,8 @@ class MergeThread(QThread):
             for file in files:
                 if file.endswith('.docx'):
                     docx_list.append(os.path.join(cwd, root, file))
-        print(f'一共找到{len(docx_list)}个docx文件')
+
+        logger.info(f'一共找到{len(docx_list)}个docx文件')
         if len(docx_list) == 0:
             raise CustomError("无待合并文档")
 
@@ -159,8 +161,8 @@ class MergeThread(QThread):
         # -------- l[l.rfind(os.sep) + 1:] 为从l中截取最后一个斜杠之后的内容 -------------
         # -------- .group(0) 为取正则匹配到的第一个字符串 -------------
         docx_list.sort(key=lambda l: float(re.search(r'^[-+]?\d+(\.\d+)?', l[l.rfind(os.sep) + 1:]).group(0)))
-        for each in docx_list:
-            print(each)
+
+        logger.info(f'>>>>>>>>>>>>>>>>>>开始合并文档<<<<<<<<<<<<<<<<<<')
 
         # -------- 合并文档 ---------
         # 填充分页符号文档
@@ -177,6 +179,8 @@ class MergeThread(QThread):
             target_composer.append(page_break_doc)
             # 拼接文档内容
             f = docx_list[i]
+            logger.info(f'==> 当前合并文档: ' + f)
             target_composer.append(Document(f))
+            logger.info(f'==> 成功')
         # 保存目标文档
         target_composer.save("合并结果.docx")

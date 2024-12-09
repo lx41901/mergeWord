@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QFileDialog
-from qfluentwidgets import MessageBox
+from PySide6.QtWidgets import QFileDialog, QMainWindow
 
 from merge.do_merge import MergeThread
+from messagebox.custom_message_box import popCustomMessageBox
 from ui.merge_win_ui import *
 import logging
 import os
@@ -26,16 +26,13 @@ class MergeWindow(QMainWindow, Ui_MergeWindow):
             self.input_dir_edit.setText(dir_path)
 
     def doMerge(self):
-        print("执行doMerge了")
         input_dir = self.input_dir_edit.text()
-        logger.info("待合并路径:" + input_dir)
         if len(input_dir) == 0:
-            mb = MessageBox("错误", "未选择待合并文件所在的文件夹", self)
-            mb.yesButton.setText("确认")
-            mb.cancelButton.hide()
-            mb.buttonLayout.insertStretch(1)
-            mb.exec()
+            logger.warning("提示: 未选择待合并文件所在的文件夹")
+            popCustomMessageBox("提示", "未选择待合并文件所在的文件夹", self)
             return
+
+        logger.info("待合并路径:" + input_dir)
 
         self.loading = LoadingDialog(self)
         self.loading.show()
@@ -51,8 +48,4 @@ class MergeWindow(QMainWindow, Ui_MergeWindow):
         self.merge_button.setText("合并")
         self.merge_button.setEnabled(True)
         self.select_input_dir_button.setEnabled(True)
-        mb = MessageBox("结果", resultMsg, self)
-        mb.yesButton.setText("确认")
-        mb.cancelButton.hide()
-        mb.buttonLayout.insertStretch(1)
-        mb.exec()
+        popCustomMessageBox("结果", resultMsg, self)
